@@ -63,7 +63,7 @@ pillow==11.0.0
 platformdirs==4.3.6
 pre_commit==4.1.0
 propcache==0.2.1
-psutil==6.1.1
+psutil==7.2.2
 psutil-home-assistant==0.0.1
 pycares==4.5.0
 pycognito==2024.5.1
