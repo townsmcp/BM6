@@ -105,7 +105,7 @@ winrt-runtime==2.3.0
 winrt-Windows.Devices.Bluetooth==2.3.0
 winrt-Windows.Devices.Bluetooth.Advertisement==2.3.0
 winrt-Windows.Devices.Bluetooth.GenericAttributeProfile==2.3.0
-winrt-Windows.Devices.Enumeration==2.3.0
+winrt-Windows.Devices.Enumeration==3.2.1
 winrt-Windows.Foundation==2.3.0
 winrt-Windows.Foundation.Collections==2.3.0
 winrt-Windows.Storage.Streams==2.3.0
