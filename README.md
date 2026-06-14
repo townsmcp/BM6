@@ -1,10 +1,10 @@
 # Battery Monitor BM6 Integration
 ![GitHub License](https://img.shields.io/github/license/Rafciq/BM6)
-![GitHub Release](https://img.shields.io/github/v/release/Rafciq/BM6)
-![GitHub Release Date](https://img.shields.io/github/release-date/Rafciq/BM6)
-![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/Rafciq/BM6)
+![GitHub Release](https://img.shields.io/github/v/release/townsmcp/BM6)
+![GitHub Release Date](https://img.shields.io/github/release-date/townsmcp/BM6)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/townsmcp/BM6)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=flat-square)](https://github.com/hacs)
-![GitHub Repo stars](https://img.shields.io/github/stars/Rafciq/BM6)
+![GitHub Repo stars](https://img.shields.io/github/stars/townsmcp/BM6)
 
 This custom component for [Home Assistant](https://www.home-assistant.io) to reads BLE Car Battery Monitor BM6. 
 
