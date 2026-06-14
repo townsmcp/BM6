@@ -38,7 +38,7 @@ jobs:
           zip bm6.zip -r ./
 
       - name: "Sign release package"
-        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        uses: sigstore/gh-action-sigstore-python@v3.4.0
         with:
           inputs: "${{ env.BM6_ROOT_DIR }}/bm6.zip"
 
