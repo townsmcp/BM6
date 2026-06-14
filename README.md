@@ -6,7 +6,9 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=flat-square)](https://github.com/hacs)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Rafciq/BM6)
 
-This custom component for [Home Assistant](https://www.home-assistant.io) to reads BLE Car Battery Monitor BM6.
+This custom component for [Home Assistant](https://www.home-assistant.io) to reads BLE Car Battery Monitor BM6. 
+
+It is based on https://github.com/Rafciq/BM6 and includes updates from https://github.com/bsrotten/BM6 as at 14/06/2026.
 
 ## About
 <table width="100%" style="border: none;">
@@ -22,7 +24,7 @@ This custom component for [Home Assistant](https://www.home-assistant.io) to rea
 
 ## Installation
 Before installing this integration, you must have [HACS](https://hacs.xyz/) integration installed first. 
-Select 'HACS' (usual on the left bar), add then choose from menu 'Custom repositories' (on top at right). Put the address https://github.com/Rafciq/BM6 at first and select repository type 'Integration' choose 'ADD'. Now you can add BM6 devices.
+Select 'HACS' (usual on the left bar), add then choose from menu 'Custom repositories' (on top at right). Put the address https://github.com/townsmcp/BM6 at first and select repository type 'Integration' choose 'ADD'. Now you can add BM6 devices.
 ## Configuration
 Go to "Settings', next 'Devices & services', select 'Integration' and use 'ADD INTEGRATION'
 
