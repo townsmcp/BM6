@@ -101,4 +101,4 @@ voluptuous==0.15.2
 voluptuous-openapi==0.0.5
 voluptuous-serialize==2.6.0
 webrtc-models==0.3.0
-yarl==1.18.3
+yarl==1.24.2
