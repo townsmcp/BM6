@@ -101,12 +101,4 @@ voluptuous==0.15.2
 voluptuous-openapi==0.0.5
 voluptuous-serialize==2.6.0
 webrtc-models==0.3.0
-winrt-runtime==2.3.0
-winrt-Windows.Devices.Bluetooth==2.3.0
-winrt-Windows.Devices.Bluetooth.Advertisement==2.3.0
-winrt-Windows.Devices.Bluetooth.GenericAttributeProfile==2.3.0
-winrt-Windows.Devices.Enumeration==2.3.0
-winrt-Windows.Foundation==2.3.0
-winrt-Windows.Foundation.Collections==2.3.0
-winrt-Windows.Storage.Streams==2.3.0
 yarl==1.18.3
