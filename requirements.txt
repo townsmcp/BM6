@@ -1,5 +1,5 @@
 bleak==0.22.3
-bleak-retry-connector==3.8.0
+bleak-retry-connector==4.6.1
 bluetooth-data-tools==1.22.0
 home-assistant-bluetooth==1.13.0
 habluetooth==3.14.0
