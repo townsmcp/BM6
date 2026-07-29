@@ -17,6 +17,8 @@ from .battery import Battery
 from .bm6_connect import BM6Connector, BM6Data, BM6DeviceError
 from .const import (
     CONF_TEMPERATURE_UNIT,
+    DEFAULT_FAILURES_BEFORE_UNAVAILABLE,
+    DEFAULT_STALE_AFTER_SECONDS,
     DOMAIN,
     CONF_DEVICE_ADDRESS,
     CONF_UPDATE_INTERVAL,
@@ -66,9 +68,9 @@ class BM6DataUpdateCoordinator(DataUpdateCoordinator):
         self._last_success_monotonic: float | None = None
         self._consecutive_failures: int = 0
 
-        # Tunables
-        self._failures_before_unavailable = 3
-        self._stale_after_seconds = 300  # 5 minutes
+        # Tunables (defaults in const.py)
+        self._failures_before_unavailable = DEFAULT_FAILURES_BEFORE_UNAVAILABLE
+        self._stale_after_seconds = DEFAULT_STALE_AFTER_SECONDS
         super().__init__(
             hass,
             _LOGGER,
@@ -139,35 +141,41 @@ class BM6DataUpdateCoordinator(DataUpdateCoordinator):
 
             return result
         except BM6DeviceError as e:
-            msg = str(e)
-            if "not found" in msg.lower():
-                self._consecutive_failures += 1
-                _LOGGER.debug(
-                    "BM6 %s not found (likely out of range/off): %s (miss %s)",
-                    self.device_address,
-                    e,
-                    self._consecutive_failures,
-                )
+            # Any BM6 read failure -- device not found, a failed GATT connection,
+            # or an all-zero/invalid realtime frame -- is treated as a transient
+            # miss. On a marginal link the device is often *seen* but the active
+            # connection fails; previously only "not found" errors were tolerated,
+            # so every failed connection flipped the sensors straight to
+            # "unavailable". Route them all through the same soft-fail window.
+            self._consecutive_failures += 1
+            now = time.monotonic()
+            last_ok = self._last_success_monotonic
+            age = (now - last_ok) if last_ok is not None else None
 
-                now = time.monotonic()
-                last_ok = self._last_success_monotonic
-                age = (now - last_ok) if last_ok is not None else None
+            _LOGGER.debug(
+                "BM6 %s read failed: %s (miss %s/%s, age=%s)",
+                self.device_address,
+                e,
+                self._consecutive_failures,
+                self._failures_before_unavailable,
+                age,
+            )
 
-                # Soft fail: keep last good data briefly
-                if (
-                    self._last_good_data is not None
-                    and self._consecutive_failures < self._failures_before_unavailable
-                    and age is not None
-                    and age < self._stale_after_seconds
-                ):
-                    return self._last_good_data
+            # Soft fail: keep serving the last good reading through a few
+            # transient misses so dashboards/automations do not flap.
+            if (
+                self._last_good_data is not None
+                and self._consecutive_failures < self._failures_before_unavailable
+                and age is not None
+                and age < self._stale_after_seconds
+            ):
+                return self._last_good_data
 
-                # Hard fail: mark unavailable
-                raise UpdateFailed(
-                    f"BM6 {self.device_address} unavailable (misses={self._consecutive_failures}, age={age})"
-                ) from e
-            _LOGGER.error("BM6 device error at %s: %s", self.device_address, e)
-            raise UpdateFailed(f"BM6 device error: {e}") from e
+            # Hard fail: genuinely out of range/off -- mark unavailable.
+            raise UpdateFailed(
+                f"BM6 {self.device_address} unavailable "
+                f"(misses={self._consecutive_failures}, age={age})"
+            ) from e
         except Exception as e:
             _LOGGER.error(
                 "Unexpected error while reading BM6 at %s: %s", self.device_address, e
