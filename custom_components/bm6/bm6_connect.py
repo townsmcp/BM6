@@ -21,6 +21,7 @@ from .const import (
     CHARACTERISTIC_UUID_WRITE,
     CRYPT_KEY,
     BLEAK_CLIENT_TIMEOUT,
+    BLEAK_CONNECT_MAX_ATTEMPTS,
     GATT_DATA_REALTIME,
     GATT_DATA_VERSION,
     GATT_NOTIFY_REALTIME_PREFIX,
@@ -35,7 +36,6 @@ else:
     BluetoothScannerDevice = object  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
-_LOGGER.info("🔥🔥 BM6_CONNECT.PY LOADED from %s 🔥🔥", __file__)
 
 # Serialize GATT connections per scanner/proxy to prevent concurrent connects
 _SCANNER_LOCKS: dict[str, asyncio.Lock] = {}
@@ -254,11 +254,6 @@ class BM6Connector:
 
         return sorted(scanners, key=key)
 
-    async def _wait_for_realtime(self) -> None:
-        """Wait until realtime data is populated by notify callback."""
-        while self._data is None or self._data.RealTime is None:
-            await asyncio.sleep(0.5)
-
     async def _connect_client(self, ble_device, scanner_name: str) -> BleakClient:
         """Establish a BLE connection using HA-recommended retry helper when available."""
         if establish_connection is not None:
@@ -267,6 +262,7 @@ class BM6Connector:
                 ble_device,
                 self._address,
                 timeout=BLEAK_CLIENT_TIMEOUT,
+                max_attempts=BLEAK_CONNECT_MAX_ATTEMPTS,
             )
 
         # Fallback to raw BleakClient (less reliable)
@@ -388,12 +384,10 @@ class BM6Connector:
                                         scanner_name,
                                         attempt,
                                     )
-                                    payload = {"address": self._address, "scanner": scanner_name}
                                     try:
-                                        self.hass.loop.call_soon_threadsafe(
-                                            self.hass.bus.async_fire,
+                                        self.hass.bus.async_fire(
                                             "bm6_success",
-                                            payload,
+                                            {"address": self._address, "scanner": scanner_name},
                                         )
                                     except Exception:
                                         _LOGGER.debug("Failed to fire bm6_success", exc_info=True)
