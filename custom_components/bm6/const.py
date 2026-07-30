@@ -6,7 +6,7 @@ from homeassistant.const import Platform, UnitOfTemperature
 
 NAME = "Battery Monitor BM6"
 DOMAIN = "bm6"
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 MIN_REQUIRED_HA_VERSION = "2025.1.1"
 
 COMPONENT = "component"
@@ -41,6 +41,16 @@ BLEAK_CONNECT_MAX_ATTEMPTS = 4
 # proxies instead of flapping to "unavailable" on every miss.
 DEFAULT_FAILURES_BEFORE_UNAVAILABLE = 5
 DEFAULT_STALE_AFTER_SECONDS = 900  # 15 minutes
+# Reject implausible reads. A BM6 monitors a 12V system; a decoded voltage below
+# this floor (e.g. 0V from a corrupt frame that isn't all-zeros) is a bad read,
+# not a real value -- treat it as a miss so the sensors go unavailable instead of
+# publishing 0. Adjust if you monitor a lower-voltage bank.
+MIN_PLAUSIBLE_VOLTAGE = 5.0
+# Fallback default for preferred scanners when the per-device option is unset.
+# The scanner picker in the integration's options overrides this per device.
+PREFERRED_SCANNERS: set[str] = set()
+# Options key: names of preferred Bluetooth scanners/proxies for GATT connections.
+CONF_PREFERRED_SCANNERS = "preferred_scanners"
 
 # Configuration keys
 CONF_DEVICE_ADDRESS = "device_address"
