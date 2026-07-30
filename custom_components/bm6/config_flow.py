@@ -49,6 +49,7 @@ from .const import (
     CONF_BATTERY_TYPE,
     CONF_STATE_ALGORITHM,
     CONF_UPDATE_INTERVAL,
+    CONF_PREFERRED_SCANNERS,
     DEFAULT_UPDATE_INTERVAL,
     MIN_UPDATE_INTERVAL,
     ERROR_MAX_LESS_THAN_MIN,
@@ -97,9 +98,20 @@ async def build_schema(
     """Build the schema for both config and options flow, handling custom voltage."""
     schema_fields = {}
     if config_page == ConfigPage.MAIN:
-        # manager: HomeAssistantBluetoothManager = _get_manager(hass)
-        # scaners: set[BaseHaScanner] = manager._connectable_scanners | manager._non_connectable_scanners
-        # _LOGGER.debug("Bluetooth scanners: %s", scaners)
+        # Enumerate connectable Bluetooth scanners/proxies to offer as options.
+        scanner_names: list[str] = []
+        try:
+            manager: HomeAssistantBluetoothManager = _get_manager(hass)
+            scanners: set[BaseHaScanner] = set(
+                getattr(manager, "_connectable_scanners", None) or set()
+            )
+            scanner_names = sorted(
+                {s.name for s in scanners if getattr(s, "name", None)}
+            )
+        except Exception:  # noqa: BLE001 - best-effort; custom_value allows typing a name
+            _LOGGER.debug("Could not enumerate Bluetooth scanners", exc_info=True)
+        current_preferred = data.get(CONF_PREFERRED_SCANNERS) or []
+        preferred_options = sorted(set(scanner_names) | set(current_preferred))
         if not is_options_flow:
             schema_fields[vol.Required(CONF_DEVICE_ADDRESS)] = vol.In(devices)
         schema_fields.update(
@@ -116,6 +128,17 @@ async def build_schema(
                     CONF_UPDATE_INTERVAL,
                     default=data.get(CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL),
                 ): vol.All(vol.Coerce(int), vol.Range(min=MIN_UPDATE_INTERVAL)),
+                vol.Optional(
+                    CONF_PREFERRED_SCANNERS,
+                    default=current_preferred,
+                ): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
+                        options=preferred_options,
+                        multiple=True,
+                        custom_value=True,
+                        mode=selector.SelectSelectorMode.DROPDOWN,
+                    )
+                ),
                 vol.Required(
                     CONF_VOLTAGE_OFFSET,
                     default=data.get(CONF_VOLTAGE_OFFSET, DEFAULT_VOLTAGE_OFFSET),
