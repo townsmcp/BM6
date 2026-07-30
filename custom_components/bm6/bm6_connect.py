@@ -22,6 +22,7 @@ from .const import (
     CRYPT_KEY,
     BLEAK_CLIENT_TIMEOUT,
     BLEAK_CONNECT_MAX_ATTEMPTS,
+    PREFERRED_SCANNERS,
     GATT_DATA_REALTIME,
     GATT_DATA_VERSION,
     GATT_NOTIFY_REALTIME_PREFIX,
@@ -71,7 +72,6 @@ def _realtime_all_zeros(rt) -> bool:
         return True
     return v == 0.0 and t == 0 and p == 0
 
-PREFERRED_SCANNERS: set[str] = set()
 
 
 # Try to use HA-recommended connector helper if available
@@ -174,10 +174,20 @@ class BM6DeviceError(RuntimeError):
 class BM6Connector:
     """Class to manage the connection to the BM6 device."""
 
-    def __init__(self, hass: HomeAssistant, address: str):
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        address: str,
+        preferred_scanners: "set[str] | list[str] | None" = None,
+    ):
         """Initialize the BM6Connector."""
         self.hass = hass
         self._address: str = address
+        # Preferred scanners/proxies for connections; falls back to the const
+        # default when the per-device option is unset.
+        self._preferred_scanners: set[str] = (
+            set(preferred_scanners) if preferred_scanners else set(PREFERRED_SCANNERS)
+        )
         self._scanners: list[BluetoothScannerDevice] = []
         self._data: Optional[BM6Data] = None
         self._rt_event = asyncio.Event()
@@ -249,7 +259,8 @@ class BM6Connector:
             name = getattr(s.scanner, "name", "") or ""
             rssi = getattr(s.advertisement, "rssi", None)
             rssi_val = rssi if isinstance(rssi, int) else -999
-            preferred_rank = 0 if (PREFERRED_SCANNERS and name in PREFERRED_SCANNERS) else 1
+            preferred = self._preferred_scanners
+            preferred_rank = 0 if (preferred and name in preferred) else 1
             return (preferred_rank, -rssi_val)
 
         return sorted(scanners, key=key)
