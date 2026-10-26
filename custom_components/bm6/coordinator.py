@@ -5,6 +5,7 @@ This module contains the BM6DataUpdateCoordinator class, which manages fetching 
 from __future__ import annotations
 
 import time
+import asyncio
 import logging
 from datetime import timedelta
 from typing import TYPE_CHECKING
@@ -21,6 +22,7 @@ from .const import (
     DEFAULT_FAILURES_BEFORE_UNAVAILABLE,
     DEFAULT_STALE_AFTER_SECONDS,
     MIN_PLAUSIBLE_VOLTAGE,
+    BM6_UPDATE_TIMEOUT,
     DOMAIN,
     CONF_DEVICE_ADDRESS,
     CONF_UPDATE_INTERVAL,
@@ -88,7 +90,15 @@ class BM6DataUpdateCoordinator(DataUpdateCoordinator):
                 address=self.device_address,
                 preferred_scanners=self.config_entry.data.get(CONF_PREFERRED_SCANNERS),
             )
-            data: BM6Data = await connector.get_data()
+            # Overall safety net: an update can never hang the coordinator. A
+            # timeout is treated like any other failed read (soft-fail window).
+            try:
+                async with asyncio.timeout(BM6_UPDATE_TIMEOUT):
+                    data: BM6Data = await connector.get_data()
+            except TimeoutError as err:
+                raise BM6DeviceError(
+                    f"BM6 {self.device_address} update timed out after {BM6_UPDATE_TIMEOUT}s"
+                ) from err
             _LOGGER.debug(
                 "BM6 %s got data: RealTime=%s Adv=%s",
                 self.device_address,

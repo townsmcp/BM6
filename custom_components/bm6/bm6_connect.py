@@ -22,6 +22,9 @@ from .const import (
     CRYPT_KEY,
     BLEAK_CLIENT_TIMEOUT,
     BLEAK_CONNECT_MAX_ATTEMPTS,
+    BM6_CLEANUP_TIMEOUT,
+    BM6_EXCHANGE_TIMEOUT,
+    BM6_RESPONSE_TIMEOUT,
     PREFERRED_SCANNERS,
     GATT_DATA_REALTIME,
     GATT_DATA_VERSION,
@@ -281,6 +284,123 @@ class BM6Connector:
         await client.connect()
         return client
 
+    async def _wait_for_realtime(self, client: BleakClient, timeout: float) -> bool:
+        """Wait for a realtime notification.
+
+        Returns True when one arrives and False when the timeout passes. Raises
+        BM6DeviceError straight away if the link drops, rather than waiting out
+        the full timeout on a connection that is already gone.
+        """
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + timeout
+        while not self._rt_event.is_set():
+            if not getattr(client, "is_connected", True):
+                raise BM6DeviceError(
+                    f"BM6 {self._address} disconnected while waiting for a response"
+                )
+            remaining = deadline - loop.time()
+            if remaining <= 0:
+                return False
+            try:
+                await asyncio.wait_for(self._rt_event.wait(), timeout=min(0.5, remaining))
+            except TimeoutError:
+                pass
+        return True
+
+    def _report_success(self, rt: "BM6RealTimeData", scanner_name: str, how: str) -> None:
+        """Log a good read and fire the bm6_success event."""
+        _LOGGER.debug(
+            "Successfully read BM6 at %s via scanner %s (%s)",
+            self._address,
+            scanner_name,
+            how,
+        )
+        try:
+            self.hass.bus.async_fire(
+                "bm6_success",
+                {"address": self._address, "scanner": scanner_name},
+            )
+        except Exception:
+            _LOGGER.debug("Failed to fire bm6_success", exc_info=True)
+        _LOGGER.info(
+            "BM6 update OK %s via %s: V=%.2f T=%s P=%s",
+            self._address,
+            scanner_name,
+            rt.Voltage,
+            rt.Temperature,
+            rt.Percent,
+        )
+
+    async def _read_realtime(self, client: BleakClient, scanner_name: str) -> BM6Data:
+        """Request a realtime frame over an open connection and return the data."""
+        await client.start_notify(CHARACTERISTIC_UUID_NOTIFY, self._notify_callback)
+        await asyncio.sleep(0.5)
+
+        for attempt in (1, 2):
+            self._data.RealTime = None
+            self._rt_event.clear()
+
+            await client.write_gatt_char(
+                CHARACTERISTIC_UUID_WRITE,
+                self._encrypt(bytearray.fromhex(GATT_DATA_REALTIME)),
+                response=True,
+            )
+
+            if not await self._wait_for_realtime(client, BM6_RESPONSE_TIMEOUT):
+                raise BM6DeviceError(
+                    f"No response from BM6 {self._address} via {scanner_name} "
+                    f"within {BM6_RESPONSE_TIMEOUT:.0f}s"
+                )
+
+            rt = self._data.RealTime
+            if rt and not _realtime_all_zeros(rt):
+                self._report_success(rt, scanner_name, f"attempt {attempt}")
+                return self._data
+
+            # We got the known all-zero "empty" frame. Many BM6 units send the
+            # real frame a beat later, so give it a short grace window without
+            # re-sending the request.
+            _LOGGER.debug(
+                "BM6 realtime all-zeros at %s via %s (attempt %s/2); waiting briefly for follow-up frame",
+                self._address,
+                scanner_name,
+                attempt,
+            )
+            self._rt_event.clear()
+            if await self._wait_for_realtime(client, 1.0):
+                rt = self._data.RealTime
+                if rt and not _realtime_all_zeros(rt):
+                    self._report_success(rt, scanner_name, f"follow-up, attempt {attempt}")
+                    return self._data
+
+            _LOGGER.debug(
+                "BM6 realtime still invalid/all-zeros at %s via %s (attempt %s/2); retrying write",
+                self._address,
+                scanner_name,
+                attempt,
+            )
+            await asyncio.sleep(0.2)
+
+        raise BM6DeviceError(
+            f"Invalid realtime payload (all zeros) from {self._address} via {scanner_name} after retry"
+        )
+
+    async def _release_client(self, client: Optional[BleakClient]) -> None:
+        """Stop notifications and disconnect, each within a time limit."""
+        if client is None:
+            return
+        if getattr(client, "is_connected", False):
+            try:
+                async with asyncio.timeout(BM6_CLEANUP_TIMEOUT):
+                    await client.stop_notify(CHARACTERISTIC_UUID_NOTIFY)
+            except Exception:
+                _LOGGER.debug("stop_notify failed for BM6 %s", self._address, exc_info=True)
+        try:
+            async with asyncio.timeout(BM6_CLEANUP_TIMEOUT):
+                await client.disconnect()
+        except Exception:
+            _LOGGER.debug("disconnect failed for BM6 %s", self._address, exc_info=True)
+
     async def get_data(self) -> Optional[BM6Data]:
         """Retrieve data from the BM6 device."""
         _LOGGER.debug("Get device BM6 at %s from HASS", self._address)
@@ -326,121 +446,19 @@ class BM6Connector:
                 async with lock:
                     try:
                         client = await self._connect_client(scanner.ble_device, scanner_name)
-
-                        await client.start_notify(
-                            CHARACTERISTIC_UUID_NOTIFY, self._notify_callback
-                        )
-                        await asyncio.sleep(0.5)
-
-                        wait_s = 6.0
-
-                        for attempt in (1, 2):
-                            self._data.RealTime = None
-                            self._rt_event.clear()
-
-                            await client.write_gatt_char(
-                                CHARACTERISTIC_UUID_WRITE,
-                                self._encrypt(bytearray.fromhex(GATT_DATA_REALTIME)),
-                                response=True,
-                            )
-
-                            await asyncio.wait_for(self._rt_event.wait(), timeout=wait_s)
-
-                            rt2 = self._data.RealTime if self._data else None
-                            if rt2 and not _realtime_all_zeros(rt2):
-                                _LOGGER.debug(
-                                    "Successfully read BM6 at %s via scanner %s (late follow-up, attempt %s)",
-                                    self._address,
-                                    scanner_name,
-                                    attempt,
-                                )
-                                # Fire an HA event so automations can count successes
-                                try:
-                                    self.hass.bus.async_fire(
-                                        "bm6_success",
-                                        {"address": self._address, "scanner": scanner_name},
-                                    )
-                                except Exception:
-                                    pass
-
-                                _LOGGER.info(
-                                    "BM6 update OK %s via %s: V=%.2f T=%s P=%s",
-                                    self._address,
-                                    scanner_name,
-                                    rt2.Voltage,
-                                    rt2.Temperature,
-                                    rt2.Percent,
-                                )
-                                return self._data
-
-
-                            # We got a realtime frame but it's the known all-zero "empty" frame.
-                            # Many BM6 units send the real frame a beat later. Give it a short grace window.
-                            _LOGGER.debug(
-                                "BM6 realtime all-zeros at %s via %s (attempt %s/2); waiting briefly for follow-up frame",
-                                self._address,
-                                scanner_name,
-                                attempt,
-                            )
-
-                            # Wait up to 1.0s for another notify without re-writing
-                            try:
-                                self._rt_event.clear()
-                                await asyncio.wait_for(self._rt_event.wait(), timeout=1.0)
-                                rt2 = self._data.RealTime if self._data else None
-                                if rt2 and not _realtime_all_zeros(rt2):
-                                    _LOGGER.debug(
-                                        "Successfully read BM6 at %s via scanner %s (late follow-up, attempt %s)",
-                                        self._address,
-                                        scanner_name,
-                                        attempt,
-                                    )
-                                    try:
-                                        self.hass.bus.async_fire(
-                                            "bm6_success",
-                                            {"address": self._address, "scanner": scanner_name},
-                                        )
-                                    except Exception:
-                                        _LOGGER.debug("Failed to fire bm6_success", exc_info=True)
-
-
-                                    _LOGGER.info(
-                                        "BM6 update OK %s via %s: V=%.2f T=%s P=%s",
-                                        self._address,
-                                        scanner_name,
-                                        rt2.Voltage,
-                                        rt2.Temperature,
-                                        rt2.Percent,
-                                    )
-                                    return self._data
-
-                            except asyncio.TimeoutError:
-                                pass
-
-                            _LOGGER.debug(
-                                "BM6 realtime still invalid/all-zeros at %s via %s (attempt %s/2); retrying write",
-                                self._address,
-                                scanner_name,
-                                attempt,
-                            )
-                            await asyncio.sleep(0.2)
-
-
-                        # You want misses to show as unavailable → raise on failure
-                        raise BM6DeviceError(
-                            f"Invalid realtime payload (all zeros) from {self._address} via {scanner_name} after retry"
-                        )
-
+                        try:
+                            async with asyncio.timeout(BM6_EXCHANGE_TIMEOUT):
+                                return await self._read_realtime(client, scanner_name)
+                        except TimeoutError as err:
+                            raise BM6DeviceError(
+                                f"BM6 {self._address} via {scanner_name} did not complete "
+                                f"the read within {BM6_EXCHANGE_TIMEOUT}s"
+                            ) from err
                     finally:
-                        if client is not None:
-                            try:
-                                await client.stop_notify(CHARACTERISTIC_UUID_NOTIFY)
-                            except Exception:
-                                pass
-                            try:
-                                await client.disconnect()
-                            except Exception:
-                                pass
+                        # Always release the connection, within a time limit, so a
+                        # wedged proxy cannot hold this scanner's lock (and its
+                        # connection slot) for every later poll.
+                        await self._release_client(client)
 
             except Exception as e:
                 try:

@@ -6,7 +6,7 @@ from homeassistant.const import Platform, UnitOfTemperature
 
 NAME = "Battery Monitor BM6"
 DOMAIN = "bm6"
-VERSION = "1.3.0"
+VERSION = "1.3.1"
 MIN_REQUIRED_HA_VERSION = "2025.1.1"
 
 COMPONENT = "component"
@@ -35,6 +35,13 @@ CRYPT_KEY = bytearray(
 BLEAK_CLIENT_TIMEOUT = 10  # Timeout
 # Max connection attempts for bleak-retry-connector (helps on weak/marginal links)
 BLEAK_CONNECT_MAX_ATTEMPTS = 4
+# Hard time limits so a lost response or a wedged Bluetooth proxy can never keep a
+# BLE connection -- and an ESPHome proxy's connection slot -- open indefinitely.
+# On expiry the connection is released and the next poll tries again.
+BM6_RESPONSE_TIMEOUT = 6.0  # seconds to wait for the reply to a realtime request
+BM6_EXCHANGE_TIMEOUT = 30  # seconds for the whole request/response exchange
+BM6_CLEANUP_TIMEOUT = 5  # seconds for each of stop_notify / disconnect
+BM6_UPDATE_TIMEOUT = 240  # seconds for a whole update across all scanners
 # Coordinator resilience: how many consecutive failed polls to tolerate, and how
 # long to keep serving the last-good reading, before the sensors are marked
 # unavailable. Smooths over transient BLE drop-outs on marginal links or busy
