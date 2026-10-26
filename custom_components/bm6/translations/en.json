@@ -11,7 +11,11 @@
                     "update_interval": "Data update interval",
                     "voltage_offset": "Voltage correction",
                     "temperature_offset": "Temperature correction",
-                    "temperature_unit": "Temperature unit"
+                    "temperature_unit": "Temperature unit",
+                    "preferred_scanners": "Preferred Bluetooth scanner(s)"
+                },
+                "data_description": {
+                    "preferred_scanners": "Pin the BM6 connection to one or more proxies/adapters by name (e.g. an ESP32 or Pi proxy near the vehicle). Leave empty to always use the strongest signal; falls back to others if a preferred one is unavailable."
                 }
             },
             "custom_calculation": {
@@ -56,7 +60,11 @@
                     "update_interval": "Data update interval",
                     "voltage_offset": "Voltage correction",
                     "temperature_offset": "Temperature correction",
-                    "temperature_unit": "Temperature unit"
+                    "temperature_unit": "Temperature unit",
+                    "preferred_scanners": "Preferred Bluetooth scanner(s)"
+                },
+                "data_description": {
+                    "preferred_scanners": "Pin the BM6 connection to one or more proxies/adapters by name (e.g. an ESP32 or Pi proxy near the vehicle). Leave empty to always use the strongest signal; falls back to others if a preferred one is unavailable."
                 }
             },
             "custom_calculation": {

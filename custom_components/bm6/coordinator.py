@@ -5,6 +5,7 @@ This module contains the BM6DataUpdateCoordinator class, which manages fetching 
 from __future__ import annotations
 
 import time
+import asyncio
 import logging
 from datetime import timedelta
 from typing import TYPE_CHECKING
@@ -17,8 +18,11 @@ from .battery import Battery
 from .bm6_connect import BM6Connector, BM6Data, BM6DeviceError
 from .const import (
     CONF_TEMPERATURE_UNIT,
+    CONF_PREFERRED_SCANNERS,
     DEFAULT_FAILURES_BEFORE_UNAVAILABLE,
     DEFAULT_STALE_AFTER_SECONDS,
+    MIN_PLAUSIBLE_VOLTAGE,
+    BM6_UPDATE_TIMEOUT,
     DOMAIN,
     CONF_DEVICE_ADDRESS,
     CONF_UPDATE_INTERVAL,
@@ -82,15 +86,38 @@ class BM6DataUpdateCoordinator(DataUpdateCoordinator):
         """Fetch data from the BM6 device."""
         try:
             connector: BM6Connector = BM6Connector(
-                hass=self.hass, address=self.device_address
+                hass=self.hass,
+                address=self.device_address,
+                preferred_scanners=self.config_entry.data.get(CONF_PREFERRED_SCANNERS),
             )
-            data: BM6Data = await connector.get_data()
+            # Overall safety net: an update can never hang the coordinator. A
+            # timeout is treated like any other failed read (soft-fail window).
+            try:
+                async with asyncio.timeout(BM6_UPDATE_TIMEOUT):
+                    data: BM6Data = await connector.get_data()
+            except TimeoutError as err:
+                raise BM6DeviceError(
+                    f"BM6 {self.device_address} update timed out after {BM6_UPDATE_TIMEOUT}s"
+                ) from err
             _LOGGER.debug(
                 "BM6 %s got data: RealTime=%s Adv=%s",
                 self.device_address,
                 getattr(data, "RealTime", None),
                 getattr(data, "Advertisement", None),
             )
+            # Guard against corrupt/partial frames that decode to an implausible
+            # voltage (e.g. 0V but not all-zeros). Treat them as a bad read so the
+            # soft-fail path keeps the last good value and then goes unavailable,
+            # rather than publishing 0 across the sensors.
+            if data is None or data.RealTime is None or data.RealTime.Voltage is None:
+                raise BM6DeviceError(
+                    f"No realtime data for BM6 {self.device_address}"
+                )
+            if data.RealTime.Voltage < MIN_PLAUSIBLE_VOLTAGE:
+                raise BM6DeviceError(
+                    f"Implausible BM6 voltage {data.RealTime.Voltage!r}V at "
+                    f"{self.device_address} (< {MIN_PLAUSIBLE_VOLTAGE}V) -- bad read"
+                )
             voltage_corrected = (
                 data.RealTime.Voltage + self.config_entry.data[CONF_VOLTAGE_OFFSET]
             )
