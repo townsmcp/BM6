@@ -42,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "No BM6 devices were found."
+            "no_devices_found": "No BM6 devices were found.",
+            "not_supported": "This Bluetooth device is not a supported BM6 battery monitor."
         },
         "error": {
             "max_less_than_min": "The maximum voltage value must be greater than the minimum.",
