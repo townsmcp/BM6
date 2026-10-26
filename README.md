@@ -46,7 +46,15 @@ matter far more than any setting:
      and cannot proxy active GATT connections.
 
 Home Assistant automatically routes the BM6 through whichever scanner sees it
-strongest, so simply adding a nearby proxy is enough -- no per-device config.
+strongest, so simply adding a nearby proxy is usually enough.
+
+### Preferred scanner (v1.3.0+)
+
+If the BM6 keeps switching between a nearby proxy and a weaker adapter, pin it:
+**Settings → Devices & services → BM6 → Configure → Preferred Bluetooth
+scanner(s)**. Pick one or more scanners from the list (or type a name). Preferred
+scanners are always tried first; if none of them can reach the BM6, the others
+are still used as a fallback. Leave it empty to always use the strongest signal.
 
 **Full step-by-step guide (both paths): [docs/bluetooth-proxy.md](docs/bluetooth-proxy.md).**
 
@@ -56,7 +64,30 @@ Transient read failures -- a failed connection or an all-zero frame, not just a
 device that is out of range -- are treated as misses. The integration keeps
 serving the last good reading through up to 5 consecutive misses / 15 minutes
 before marking the sensors unavailable, which stops cosmetic flapping on weak
-links. Tunables live in `custom_components/bm6/const.py`.
+links. A reading below 5V is treated as a corrupt frame (v1.3.0+), so the sensors
+go unavailable rather than reporting 0. Tunables live in
+`custom_components/bm6/const.py`.
+
+### How a reading is taken, and its time limits (v1.3.1+)
+
+Each poll the integration connects to the BM6, asks it for a reading, waits for
+the reply, then disconnects. Every step has a hard time limit, so a lost reply or
+an unresponsive proxy can never leave the connection open:
+
+| Step | Limit | Setting in `const.py` |
+| --- | --- | --- |
+| Waiting for the BM6's reply | 6 s | `BM6_RESPONSE_TIMEOUT` |
+| Whole request/reply exchange once connected | 30 s | `BM6_EXCHANGE_TIMEOUT` |
+| Stopping notifications / disconnecting (each) | 5 s | `BM6_CLEANUP_TIMEOUT` |
+| One complete update, across all scanners | 240 s | `BM6_UPDATE_TIMEOUT` |
+
+- If the connection drops while waiting, the integration gives up straight away
+  instead of waiting out the limit.
+- The connection is always released afterwards, so an ESPHome proxy's connection
+  slot is freed even when something goes wrong. This matters most when several
+  BM6 devices share one proxy.
+- Any timeout counts as an ordinary missed read: the next poll tries again, and
+  the resilience window above decides when the sensors show as unavailable.
 
 ## Installation
 Before installing this integration, you must have [HACS](https://hacs.xyz/) integration installed first. 
