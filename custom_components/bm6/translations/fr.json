@@ -11,7 +11,11 @@
                     "update_interval": "Intervalle de mise à jour des données",
                     "voltage_offset": "Correction de tension",
                     "temperature_offset": "Correction de température",
-                    "temperature_unit": "Unité de température"
+                    "temperature_unit": "Unité de température",
+                    "preferred_scanners": "Scanners Bluetooth préférés"
+                },
+                "data_description": {
+                    "preferred_scanners": "Associe la connexion du BM6 à un ou plusieurs proxys/adaptateurs par leur nom (par ex. un proxy ESP32 ou Pi près du véhicule). Laissez vide pour toujours utiliser le signal le plus fort ; si un scanner préféré est indisponible, les autres sont utilisés."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Aucun appareil BM6 n'a été trouvé."
+            "no_devices_found": "Aucun appareil BM6 n'a été trouvé.",
+            "not_supported": "Cet appareil Bluetooth n'est pas un moniteur de batterie BM6 pris en charge."
         },
         "error": {
             "max_less_than_min": "La valeur de tension maximale doit être supérieure à la valeur minimale.",
@@ -56,7 +61,11 @@
                     "update_interval": "Intervalle de mise à jour des données",
                     "voltage_offset": "Correction de tension",
                     "temperature_offset": "Correction de température",
-                    "temperature_unit": "Unité de température"
+                    "temperature_unit": "Unité de température",
+                    "preferred_scanners": "Scanners Bluetooth préférés"
+                },
+                "data_description": {
+                    "preferred_scanners": "Associe la connexion du BM6 à un ou plusieurs proxys/adaptateurs par leur nom (par ex. un proxy ESP32 ou Pi près du véhicule). Laissez vide pour toujours utiliser le signal le plus fort ; si un scanner préféré est indisponible, les autres sont utilisés."
                 }
             },
             "custom_calculation": {

@@ -11,7 +11,11 @@
                     "update_interval": "Tietojen päivitysväli",
                     "voltage_offset": "Jännitteen korjaus",
                     "temperature_offset": "Lämpötilan korjaus",
-                    "temperature_unit": "Lämpötilan yksikkö"
+                    "temperature_unit": "Lämpötilan yksikkö",
+                    "preferred_scanners": "Ensisijaiset Bluetooth-skannerit"
+                },
+                "data_description": {
+                    "preferred_scanners": "Ohjaa BM6-yhteys yhden tai useamman välityspalvelimen/sovittimen kautta nimen perusteella (esim. ajoneuvon lähellä oleva ESP32- tai Pi-välityspalvelin). Jätä tyhjäksi, jos haluat käyttää aina vahvinta signaalia; jos ensisijainen ei ole käytettävissä, käytetään muita."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "BM6-laitteita ei löytynyt."
+            "no_devices_found": "BM6-laitteita ei löytynyt.",
+            "not_supported": "Tämä Bluetooth-laite ei ole tuettu BM6-akkumonitori."
         },
         "error": {
             "max_less_than_min": "Jännitteen enimmäisarvon on oltava suurempi kuin vähimmäisarvon.",
@@ -56,7 +61,11 @@
                     "update_interval": "Tietojen päivitysväli",
                     "voltage_offset": "Jännitteen korjaus",
                     "temperature_offset": "Lämpötilan korjaus",
-                    "temperature_unit": "Lämpötilan yksikkö"
+                    "temperature_unit": "Lämpötilan yksikkö",
+                    "preferred_scanners": "Ensisijaiset Bluetooth-skannerit"
+                },
+                "data_description": {
+                    "preferred_scanners": "Ohjaa BM6-yhteys yhden tai useamman välityspalvelimen/sovittimen kautta nimen perusteella (esim. ajoneuvon lähellä oleva ESP32- tai Pi-välityspalvelin). Jätä tyhjäksi, jos haluat käyttää aina vahvinta signaalia; jos ensisijainen ei ole käytettävissä, käytetään muita."
                 }
             },
             "custom_calculation": {

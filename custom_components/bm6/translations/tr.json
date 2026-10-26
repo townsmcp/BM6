@@ -11,7 +11,11 @@
                     "update_interval": "Veri güncelleme aralığı",
                     "voltage_offset": "Voltaj düzeltmesi",
                     "temperature_offset": "Sıcaklık düzeltmesi",
-                    "temperature_unit": "Sıcaklık birimi"
+                    "temperature_unit": "Sıcaklık birimi",
+                    "preferred_scanners": "Tercih edilen Bluetooth tarayıcılar"
+                },
+                "data_description": {
+                    "preferred_scanners": "BM6 bağlantısını ada göre bir veya daha fazla proxy/adaptöre sabitleyin (ör. araca yakın bir ESP32 veya Pi proxy). Her zaman en güçlü sinyali kullanmak için boş bırakın; tercih edilen kullanılamıyorsa diğerleri kullanılır."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Hiçbir BM6 cihazı bulunamadı."
+            "no_devices_found": "Hiçbir BM6 cihazı bulunamadı.",
+            "not_supported": "Bu Bluetooth cihazı desteklenen bir BM6 pil monitörü değil."
         },
         "error": {
             "max_less_than_min": "Maksimum voltaj değeri minimumdan büyük olmalıdır.",
@@ -56,7 +61,11 @@
                     "update_interval": "Veri güncelleme aralığı",
                     "voltage_offset": "Voltaj düzeltmesi",
                     "temperature_offset": "Sıcaklık düzeltmesi",
-                    "temperature_unit": "Sıcaklık birimi"
+                    "temperature_unit": "Sıcaklık birimi",
+                    "preferred_scanners": "Tercih edilen Bluetooth tarayıcılar"
+                },
+                "data_description": {
+                    "preferred_scanners": "BM6 bağlantısını ada göre bir veya daha fazla proxy/adaptöre sabitleyin (ör. araca yakın bir ESP32 veya Pi proxy). Her zaman en güçlü sinyali kullanmak için boş bırakın; tercih edilen kullanılamıyorsa diğerleri kullanılır."
                 }
             },
             "custom_calculation": {

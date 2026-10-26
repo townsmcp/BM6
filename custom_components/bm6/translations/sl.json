@@ -11,7 +11,11 @@
                     "update_interval": "Interval posodabljanja podatkov",
                     "voltage_offset": "Korekcija napetosti",
                     "temperature_offset": "Korekcija temperature",
-                    "temperature_unit": "Enota temperature"
+                    "temperature_unit": "Enota temperature",
+                    "preferred_scanners": "Prednostni Bluetooth skenerji"
+                },
+                "data_description": {
+                    "preferred_scanners": "Povezavo z BM6 vežite na enega ali več posrednikov/adapterjev po imenu (npr. posrednik ESP32 ali Pi blizu vozila). Pustite prazno, da se vedno uporabi najmočnejši signal; če prednostni ni na voljo, se uporabijo drugi."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Naprav BM6 ni bilo mogoče najti."
+            "no_devices_found": "Naprav BM6 ni bilo mogoče najti.",
+            "not_supported": "Ta naprava Bluetooth ni podprt nadzornik baterije BM6."
         },
         "error": {
             "max_less_than_min": "Najvišja vrednost napetosti mora biti večja od najnižje.",
@@ -56,7 +61,11 @@
                     "update_interval": "Interval posodabljanja podatkov",
                     "voltage_offset": "Korekcija napetosti",
                     "temperature_offset": "Korekcija temperature",
-                    "temperature_unit": "Enota temperature"
+                    "temperature_unit": "Enota temperature",
+                    "preferred_scanners": "Prednostni Bluetooth skenerji"
+                },
+                "data_description": {
+                    "preferred_scanners": "Povezavo z BM6 vežite na enega ali več posrednikov/adapterjev po imenu (npr. posrednik ESP32 ali Pi blizu vozila). Pustite prazno, da se vedno uporabi najmočnejši signal; če prednostni ni na voljo, se uporabijo drugi."
                 }
             },
             "custom_calculation": {

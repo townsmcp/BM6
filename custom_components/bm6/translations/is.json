@@ -11,7 +11,11 @@
                     "update_interval": "Bil milli gagnauppfærslna",
                     "voltage_offset": "Spennuleiðrétting",
                     "temperature_offset": "Hitaleiðrétting",
-                    "temperature_unit": "Hitaeining"
+                    "temperature_unit": "Hitaeining",
+                    "preferred_scanners": "Valdir Bluetooth-skannar"
+                },
+                "data_description": {
+                    "preferred_scanners": "Festu tengingu BM6 við einn eða fleiri milliþjóna/millistykki eftir nafni (t.d. ESP32- eða Pi-milliþjón nálægt ökutækinu). Skildu eftir autt til að nota alltaf sterkasta merkið; ef valinn skanni er ekki tiltækur eru hinir notaðir."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Engin BM6 tæki fundust."
+            "no_devices_found": "Engin BM6 tæki fundust.",
+            "not_supported": "Þetta Bluetooth-tæki er ekki studd BM6 rafhlöðuvöktun."
         },
         "error": {
             "max_less_than_min": "Hámarksspennugildið verður að vera hærra en lágmarkið.",
@@ -56,7 +61,11 @@
                     "update_interval": "Bil milli gagnauppfærslna",
                     "voltage_offset": "Spennuleiðrétting",
                     "temperature_offset": "Hitaleiðrétting",
-                    "temperature_unit": "Hitaeining"
+                    "temperature_unit": "Hitaeining",
+                    "preferred_scanners": "Valdir Bluetooth-skannar"
+                },
+                "data_description": {
+                    "preferred_scanners": "Festu tengingu BM6 við einn eða fleiri milliþjóna/millistykki eftir nafni (t.d. ESP32- eða Pi-milliþjón nálægt ökutækinu). Skildu eftir autt til að nota alltaf sterkasta merkið; ef valinn skanni er ekki tiltækur eru hinir notaðir."
                 }
             },
             "custom_calculation": {

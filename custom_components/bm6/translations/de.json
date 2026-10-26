@@ -11,7 +11,11 @@
                     "update_interval": "Datenaktualisierungsintervall",
                     "voltage_offset": "Spannungskorrektur",
                     "temperature_offset": "Temperaturkorrektur",
-                    "temperature_unit": "Temperatureinheit"
+                    "temperature_unit": "Temperatureinheit",
+                    "preferred_scanners": "Bevorzugte Bluetooth-Scanner"
+                },
+                "data_description": {
+                    "preferred_scanners": "Die Verbindung zum BM6 an einen oder mehrere Proxys/Adapter (nach Namen) binden, z. B. einen ESP32- oder Pi-Proxy in der Nähe des Fahrzeugs. Leer lassen, um immer das stärkste Signal zu verwenden; ist ein bevorzugter nicht erreichbar, werden die übrigen genutzt."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Es wurden keine BM6-Geräte gefunden."
+            "no_devices_found": "Es wurden keine BM6-Geräte gefunden.",
+            "not_supported": "Dieses Bluetooth-Gerät ist kein unterstützter BM6-Batteriemonitor."
         },
         "error": {
             "max_less_than_min": "Der maximale Spannungswert muss größer als der minimale sein.",
@@ -56,7 +61,11 @@
                     "update_interval": "Datenaktualisierungsintervall",
                     "voltage_offset": "Spannungskorrektur",
                     "temperature_offset": "Temperaturkorrektur",
-                    "temperature_unit": "Temperatureinheit"
+                    "temperature_unit": "Temperatureinheit",
+                    "preferred_scanners": "Bevorzugte Bluetooth-Scanner"
+                },
+                "data_description": {
+                    "preferred_scanners": "Die Verbindung zum BM6 an einen oder mehrere Proxys/Adapter (nach Namen) binden, z. B. einen ESP32- oder Pi-Proxy in der Nähe des Fahrzeugs. Leer lassen, um immer das stärkste Signal zu verwenden; ist ein bevorzugter nicht erreichbar, werden die übrigen genutzt."
                 }
             },
             "custom_calculation": {

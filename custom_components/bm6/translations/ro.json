@@ -11,7 +11,11 @@
                     "update_interval": "Interval de actualizare a datelor",
                     "voltage_offset": "Corecție de tensiune",
                     "temperature_offset": "Corecție de temperatură",
-                    "temperature_unit": "Unitate de temperatură"
+                    "temperature_unit": "Unitate de temperatură",
+                    "preferred_scanners": "Scanere Bluetooth preferate"
+                },
+                "data_description": {
+                    "preferred_scanners": "Fixează conexiunea BM6 la unul sau mai multe proxy-uri/adaptoare după nume (de ex. un proxy ESP32 sau Pi lângă vehicul). Lăsați gol pentru a folosi întotdeauna cel mai puternic semnal; dacă unul preferat nu este disponibil, se folosesc celelalte."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Nu au fost găsite dispozitive BM6."
+            "no_devices_found": "Nu au fost găsite dispozitive BM6.",
+            "not_supported": "Acest dispozitiv Bluetooth nu este un monitor de baterie BM6 acceptat."
         },
         "error": {
             "max_less_than_min": "Valoarea maximă a tensiunii trebuie să fie mai mare decât cea minimă.",
@@ -56,7 +61,11 @@
                     "update_interval": "Interval de actualizare a datelor",
                     "voltage_offset": "Corecție de tensiune",
                     "temperature_offset": "Corecție de temperatură",
-                    "temperature_unit": "Unitate de temperatură"
+                    "temperature_unit": "Unitate de temperatură",
+                    "preferred_scanners": "Scanere Bluetooth preferate"
+                },
+                "data_description": {
+                    "preferred_scanners": "Fixează conexiunea BM6 la unul sau mai multe proxy-uri/adaptoare după nume (de ex. un proxy ESP32 sau Pi lângă vehicul). Lăsați gol pentru a folosi întotdeauna cel mai puternic semnal; dacă unul preferat nu este disponibil, se folosesc celelalte."
                 }
             },
             "custom_calculation": {

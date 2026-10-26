@@ -11,7 +11,11 @@
                     "update_interval": "Adatfrissítési időköz",
                     "voltage_offset": "Feszültségkorrekció",
                     "temperature_offset": "Hőmérséklet-korrekció",
-                    "temperature_unit": "Hőmérséklet-egység"
+                    "temperature_unit": "Hőmérséklet-egység",
+                    "preferred_scanners": "Előnyben részesített Bluetooth-szkennerek"
+                },
+                "data_description": {
+                    "preferred_scanners": "A BM6-kapcsolat egy vagy több proxyhoz/adapterhez rendelése név szerint (pl. a jármű közelében lévő ESP32- vagy Pi-proxy). Hagyja üresen, ha mindig a legerősebb jelet szeretné használni; ha egy előnyben részesített nem érhető el, a többi lesz használva."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Nem található BM6 eszköz."
+            "no_devices_found": "Nem található BM6 eszköz.",
+            "not_supported": "Ez a Bluetooth-eszköz nem támogatott BM6 akkumulátor-figyelő."
         },
         "error": {
             "max_less_than_min": "A maximális feszültségértéknek nagyobbnak kell lennie a minimálisnál.",
@@ -56,7 +61,11 @@
                     "update_interval": "Adatfrissítési időköz",
                     "voltage_offset": "Feszültségkorrekció",
                     "temperature_offset": "Hőmérséklet-korrekció",
-                    "temperature_unit": "Hőmérséklet-egység"
+                    "temperature_unit": "Hőmérséklet-egység",
+                    "preferred_scanners": "Előnyben részesített Bluetooth-szkennerek"
+                },
+                "data_description": {
+                    "preferred_scanners": "A BM6-kapcsolat egy vagy több proxyhoz/adapterhez rendelése név szerint (pl. a jármű közelében lévő ESP32- vagy Pi-proxy). Hagyja üresen, ha mindig a legerősebb jelet szeretné használni; ha egy előnyben részesített nem érhető el, a többi lesz használva."
                 }
             },
             "custom_calculation": {

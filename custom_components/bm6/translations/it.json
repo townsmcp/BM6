@@ -11,7 +11,11 @@
                     "update_interval": "Intervallo di aggiornamento dei dati",
                     "voltage_offset": "Correzione della tensione",
                     "temperature_offset": "Correzione della temperatura",
-                    "temperature_unit": "Unità di temperatura"
+                    "temperature_unit": "Unità di temperatura",
+                    "preferred_scanners": "Scanner Bluetooth preferiti"
+                },
+                "data_description": {
+                    "preferred_scanners": "Vincola la connessione del BM6 a uno o più proxy/adattatori per nome (ad es. un proxy ESP32 o Pi vicino al veicolo). Lascia vuoto per usare sempre il segnale più forte; se uno preferito non è disponibile, vengono usati gli altri."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Nessun dispositivo BM6 trovato."
+            "no_devices_found": "Nessun dispositivo BM6 trovato.",
+            "not_supported": "Questo dispositivo Bluetooth non è un monitor batteria BM6 supportato."
         },
         "error": {
             "max_less_than_min": "Il valore massimo di tensione deve essere maggiore del minimo.",
@@ -56,7 +61,11 @@
                     "update_interval": "Intervallo di aggiornamento dei dati",
                     "voltage_offset": "Correzione della tensione",
                     "temperature_offset": "Correzione della temperatura",
-                    "temperature_unit": "Unità di temperatura"
+                    "temperature_unit": "Unità di temperatura",
+                    "preferred_scanners": "Scanner Bluetooth preferiti"
+                },
+                "data_description": {
+                    "preferred_scanners": "Vincola la connessione del BM6 a uno o più proxy/adattatori per nome (ad es. un proxy ESP32 o Pi vicino al veicolo). Lascia vuoto per usare sempre il segnale più forte; se uno preferito non è disponibile, vengono usati gli altri."
                 }
             },
             "custom_calculation": {

@@ -11,7 +11,11 @@
                     "update_interval": "Interval for dataopdatering",
                     "voltage_offset": "Spændingskorrektion",
                     "temperature_offset": "Temperaturkorrektion",
-                    "temperature_unit": "Temperaturenhed"
+                    "temperature_unit": "Temperaturenhed",
+                    "preferred_scanners": "Foretrukne Bluetooth-scannere"
+                },
+                "data_description": {
+                    "preferred_scanners": "Fastgør forbindelsen til BM6 til en eller flere proxyer/adaptere efter navn (f.eks. en ESP32- eller Pi-proxy tæt på køretøjet). Lad feltet være tomt for altid at bruge det stærkeste signal; der skiftes til andre, hvis en foretrukken ikke er tilgængelig."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Der blev ikke fundet nogen BM6-enheder."
+            "no_devices_found": "Der blev ikke fundet nogen BM6-enheder.",
+            "not_supported": "Denne Bluetooth-enhed er ikke en understøttet BM6-batteriovervågning."
         },
         "error": {
             "max_less_than_min": "Den maksimale spændingsværdi skal være større end den minimale.",
@@ -56,7 +61,11 @@
                     "update_interval": "Interval for dataopdatering",
                     "voltage_offset": "Spændingskorrektion",
                     "temperature_offset": "Temperaturkorrektion",
-                    "temperature_unit": "Temperaturenhed"
+                    "temperature_unit": "Temperaturenhed",
+                    "preferred_scanners": "Foretrukne Bluetooth-scannere"
+                },
+                "data_description": {
+                    "preferred_scanners": "Fastgør forbindelsen til BM6 til en eller flere proxyer/adaptere efter navn (f.eks. en ESP32- eller Pi-proxy tæt på køretøjet). Lad feltet være tomt for altid at bruge det stærkeste signal; der skiftes til andre, hvis en foretrukken ikke er tilgængelig."
                 }
             },
             "custom_calculation": {

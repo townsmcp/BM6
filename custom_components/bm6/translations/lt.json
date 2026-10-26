@@ -11,7 +11,11 @@
                     "update_interval": "Duomenų atnaujinimo intervalas",
                     "voltage_offset": "Įtampos korekcija",
                     "temperature_offset": "Temperatūros korekcija",
-                    "temperature_unit": "Temperatūros vienetas"
+                    "temperature_unit": "Temperatūros vienetas",
+                    "preferred_scanners": "Pageidaujami Bluetooth skaitytuvai"
+                },
+                "data_description": {
+                    "preferred_scanners": "Priskirkite BM6 ryšį vienam ar keliems tarpiniams serveriams/adapteriams pagal pavadinimą (pvz., ESP32 ar Pi tarpiniam serveriui prie transporto priemonės). Palikite tuščią, kad visada būtų naudojamas stipriausias signalas; jei pageidaujamas nepasiekiamas, naudojami kiti."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "BM6 įrenginių nerasta."
+            "no_devices_found": "BM6 įrenginių nerasta.",
+            "not_supported": "Šis Bluetooth įrenginys nėra palaikomas BM6 akumuliatoriaus stebėjimo įrenginys."
         },
         "error": {
             "max_less_than_min": "Maksimali įtampos vertė turi būti didesnė už minimalią.",
@@ -56,7 +61,11 @@
                     "update_interval": "Duomenų atnaujinimo intervalas",
                     "voltage_offset": "Įtampos korekcija",
                     "temperature_offset": "Temperatūros korekcija",
-                    "temperature_unit": "Temperatūros vienetas"
+                    "temperature_unit": "Temperatūros vienetas",
+                    "preferred_scanners": "Pageidaujami Bluetooth skaitytuvai"
+                },
+                "data_description": {
+                    "preferred_scanners": "Priskirkite BM6 ryšį vienam ar keliems tarpiniams serveriams/adapteriams pagal pavadinimą (pvz., ESP32 ar Pi tarpiniam serveriui prie transporto priemonės). Palikite tuščią, kad visada būtų naudojamas stipriausias signalas; jei pageidaujamas nepasiekiamas, naudojami kiti."
                 }
             },
             "custom_calculation": {

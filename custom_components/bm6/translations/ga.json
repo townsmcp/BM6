@@ -11,7 +11,11 @@
                     "update_interval": "Eatramh nuashonraithe sonraí",
                     "voltage_offset": "Ceartú voltais",
                     "temperature_offset": "Ceartú teochta",
-                    "temperature_unit": "Aonad teochta"
+                    "temperature_unit": "Aonad teochta",
+                    "preferred_scanners": "Scanóirí Bluetooth roghnaithe"
+                },
+                "data_description": {
+                    "preferred_scanners": "Ceangail nasc an BM6 le seachfhreastalaí/cuibheoir amháin nó níos mó de réir ainm (m.sh. seachfhreastalaí ESP32 nó Pi gar don fheithicil). Fág folamh chun an comhartha is láidre a úsáid i gcónaí; úsáidtear na cinn eile mura bhfuil ceann roghnaithe ar fáil."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Níor aimsíodh aon ghléas BM6."
+            "no_devices_found": "Níor aimsíodh aon ghléas BM6.",
+            "not_supported": "Ní monatóir cadhnra BM6 a dtacaítear leis é an gléas Bluetooth seo."
         },
         "error": {
             "max_less_than_min": "Ní mór don uasluach voltais a bheith níos mó ná an t-íosluach.",
@@ -56,7 +61,11 @@
                     "update_interval": "Eatramh nuashonraithe sonraí",
                     "voltage_offset": "Ceartú voltais",
                     "temperature_offset": "Ceartú teochta",
-                    "temperature_unit": "Aonad teochta"
+                    "temperature_unit": "Aonad teochta",
+                    "preferred_scanners": "Scanóirí Bluetooth roghnaithe"
+                },
+                "data_description": {
+                    "preferred_scanners": "Ceangail nasc an BM6 le seachfhreastalaí/cuibheoir amháin nó níos mó de réir ainm (m.sh. seachfhreastalaí ESP32 nó Pi gar don fheithicil). Fág folamh chun an comhartha is láidre a úsáid i gcónaí; úsáidtear na cinn eile mura bhfuil ceann roghnaithe ar fáil."
                 }
             },
             "custom_calculation": {

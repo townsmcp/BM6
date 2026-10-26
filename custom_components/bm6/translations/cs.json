@@ -11,7 +11,11 @@
                     "update_interval": "Interval aktualizace dat",
                     "voltage_offset": "Korekce napětí",
                     "temperature_offset": "Korekce teploty",
-                    "temperature_unit": "Jednotka teploty"
+                    "temperature_unit": "Jednotka teploty",
+                    "preferred_scanners": "Preferované skenery Bluetooth"
+                },
+                "data_description": {
+                    "preferred_scanners": "Připojení k BM6 přednostně vést přes jeden nebo více proxy/adaptérů podle názvu (např. proxy ESP32 nebo Pi poblíž vozidla). Ponechte prázdné, chcete-li vždy použít nejsilnější signál; pokud preferovaný není dostupný, použijí se ostatní."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Nebyla nalezena žádná zařízení BM6."
+            "no_devices_found": "Nebyla nalezena žádná zařízení BM6.",
+            "not_supported": "Toto zařízení Bluetooth není podporovaný monitor baterie BM6."
         },
         "error": {
             "max_less_than_min": "Maximální hodnota napětí musí být větší než minimální.",
@@ -56,7 +61,11 @@
                     "update_interval": "Interval aktualizace dat",
                     "voltage_offset": "Korekce napětí",
                     "temperature_offset": "Korekce teploty",
-                    "temperature_unit": "Jednotka teploty"
+                    "temperature_unit": "Jednotka teploty",
+                    "preferred_scanners": "Preferované skenery Bluetooth"
+                },
+                "data_description": {
+                    "preferred_scanners": "Připojení k BM6 přednostně vést přes jeden nebo více proxy/adaptérů podle názvu (např. proxy ESP32 nebo Pi poblíž vozidla). Ponechte prázdné, chcete-li vždy použít nejsilnější signál; pokud preferovaný není dostupný, použijí se ostatní."
                 }
             },
             "custom_calculation": {

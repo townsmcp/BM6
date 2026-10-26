@@ -11,7 +11,11 @@
                     "update_interval": "Datu atjaunināšanas intervāls",
                     "voltage_offset": "Sprieguma korekcija",
                     "temperature_offset": "Temperatūras korekcija",
-                    "temperature_unit": "Temperatūras vienība"
+                    "temperature_unit": "Temperatūras vienība",
+                    "preferred_scanners": "Vēlamie Bluetooth skeneri"
+                },
+                "data_description": {
+                    "preferred_scanners": "Piesaistiet BM6 savienojumu vienam vai vairākiem starpniekserveriem/adapteriem pēc nosaukuma (piem., ESP32 vai Pi starpniekserverim pie transportlīdzekļa). Atstājiet tukšu, lai vienmēr izmantotu spēcīgāko signālu; ja vēlamais nav pieejams, tiek izmantoti citi."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Nav atrasta neviena BM6 ierīce."
+            "no_devices_found": "Nav atrasta neviena BM6 ierīce.",
+            "not_supported": "Šī Bluetooth ierīce nav atbalstīts BM6 akumulatora pārraugs."
         },
         "error": {
             "max_less_than_min": "Maksimālajai sprieguma vērtībai jābūt lielākai par minimālo.",
@@ -56,7 +61,11 @@
                     "update_interval": "Datu atjaunināšanas intervāls",
                     "voltage_offset": "Sprieguma korekcija",
                     "temperature_offset": "Temperatūras korekcija",
-                    "temperature_unit": "Temperatūras vienība"
+                    "temperature_unit": "Temperatūras vienība",
+                    "preferred_scanners": "Vēlamie Bluetooth skeneri"
+                },
+                "data_description": {
+                    "preferred_scanners": "Piesaistiet BM6 savienojumu vienam vai vairākiem starpniekserveriem/adapteriem pēc nosaukuma (piem., ESP32 vai Pi starpniekserverim pie transportlīdzekļa). Atstājiet tukšu, lai vienmēr izmantotu spēcīgāko signālu; ja vēlamais nav pieejams, tiek izmantoti citi."
                 }
             },
             "custom_calculation": {

@@ -11,7 +11,11 @@
                     "update_interval": "Intervall ta' aġġornament tad-data",
                     "voltage_offset": "Korrezzjoni tal-vultaġġ",
                     "temperature_offset": "Korrezzjoni tat-temperatura",
-                    "temperature_unit": "Unità tat-temperatura"
+                    "temperature_unit": "Unità tat-temperatura",
+                    "preferred_scanners": "Skener Bluetooth preferuti"
+                },
+                "data_description": {
+                    "preferred_scanners": "Orbot il-konnessjoni tal-BM6 ma' proxy/adapter wieħed jew aktar skont l-isem (eż. proxy ESP32 jew Pi qrib il-vettura). Ħallih vojt biex jintuża dejjem l-aqwa sinjal; jekk wieħed preferut mhuwiex disponibbli, jintużaw l-oħrajn."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Ma nstab l-ebda apparat BM6."
+            "no_devices_found": "Ma nstab l-ebda apparat BM6.",
+            "not_supported": "Dan l-apparat Bluetooth mhuwiex monitor tal-batterija BM6 appoġġjat."
         },
         "error": {
             "max_less_than_min": "Il-valur massimu tal-vultaġġ irid ikun akbar mill-minimu.",
@@ -56,7 +61,11 @@
                     "update_interval": "Intervall ta' aġġornament tad-data",
                     "voltage_offset": "Korrezzjoni tal-vultaġġ",
                     "temperature_offset": "Korrezzjoni tat-temperatura",
-                    "temperature_unit": "Unità tat-temperatura"
+                    "temperature_unit": "Unità tat-temperatura",
+                    "preferred_scanners": "Skener Bluetooth preferuti"
+                },
+                "data_description": {
+                    "preferred_scanners": "Orbot il-konnessjoni tal-BM6 ma' proxy/adapter wieħed jew aktar skont l-isem (eż. proxy ESP32 jew Pi qrib il-vettura). Ħallih vojt biex jintuża dejjem l-aqwa sinjal; jekk wieħed preferut mhuwiex disponibbli, jintużaw l-oħrajn."
                 }
             },
             "custom_calculation": {

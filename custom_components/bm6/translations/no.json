@@ -11,7 +11,11 @@
                     "update_interval": "Intervall for dataoppdatering",
                     "voltage_offset": "Spenningskorreksjon",
                     "temperature_offset": "Temperaturkorreksjon",
-                    "temperature_unit": "Temperaturenhet"
+                    "temperature_unit": "Temperaturenhet",
+                    "preferred_scanners": "Foretrukne Bluetooth-skannere"
+                },
+                "data_description": {
+                    "preferred_scanners": "Lås tilkoblingen til BM6 til én eller flere proxyer/adaptere etter navn (f.eks. en ESP32- eller Pi-proxy nær kjøretøyet). La feltet stå tomt for alltid å bruke det sterkeste signalet; hvis en foretrukket ikke er tilgjengelig, brukes de andre."
                 }
             },
             "custom_calculation": {
@@ -38,7 +42,8 @@
             }
         },
         "abort": {
-            "no_devices_found": "Ingen BM6-enheter ble funnet."
+            "no_devices_found": "Ingen BM6-enheter ble funnet.",
+            "not_supported": "Denne Bluetooth-enheten er ikke en støttet BM6 batteriovervåking."
         },
         "error": {
             "max_less_than_min": "Den maksimale spenningsverdien må være større enn den minimale.",
@@ -56,7 +61,11 @@
                     "update_interval": "Intervall for dataoppdatering",
                     "voltage_offset": "Spenningskorreksjon",
                     "temperature_offset": "Temperaturkorreksjon",
-                    "temperature_unit": "Temperaturenhet"
+                    "temperature_unit": "Temperaturenhet",
+                    "preferred_scanners": "Foretrukne Bluetooth-skannere"
+                },
+                "data_description": {
+                    "preferred_scanners": "Lås tilkoblingen til BM6 til én eller flere proxyer/adaptere etter navn (f.eks. en ESP32- eller Pi-proxy nær kjøretøyet). La feltet stå tomt for alltid å bruke det sterkeste signalet; hvis en foretrukket ikke er tilgjengelig, brukes de andre."
                 }
             },
             "custom_calculation": {
